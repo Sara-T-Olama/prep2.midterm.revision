@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit 1 & 2 Rapid Review: Rules, Tricks, and Traps! | Eng Sara T Olama</title>
+  <!-- MathJax for rendering formal mathematics -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --secondary: #06B6D4;
+      --accent: #F59E0B;
+      --success: #10B981;
+      --danger: #EF4444;
+      --dark: #1E293B;
+      --light-bg: #FFFFFF;
+      --card-bg: #F8FAFC;
+      --shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.08), 0 8px 12px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(#E0E7FF 1.5px, transparent 1.5px), 
+        radial-gradient(#E0E7FF 1.5px, #FFFFFF 1.5px);
+      background-size: 60px 60px;
+      background-position: 0 0, 30px 30px;
+    }
+
+    /* Ambient Breathing Background Animation */
+    @keyframes ambientBreathing {
+      0%, 100% { background-color: #FFFFFF; }
+      50% { background-color: #F8FAFC; }
+    }
+    body {
+      animation: ambientBreathing 12s ease-in-out infinite;
+    }
+
+    /* Header Bar */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--primary-light);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .signature-badge {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25); }
+      50% { transform: scale(1.03); box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4); }
+    }
+
+    .game-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hud-stats {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .stat-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      padding: 0.4rem 0.8rem;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .stat-badge i {
+      font-size: 1.1rem;
+    }
+
+    /* Main Canvas Layout */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .slide-card {
+      background: white;
+      border-radius: 24px;
+      border: 3px solid #EEF2FF;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      display: none;
+      flex-direction: column;
+      min-height: 540px;
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide-card.active {
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(15px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Slide Signature Tag (Mandatory on Every Slide) */
+    .slide-signature-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #94A3B8;
+      background: #F1F5F9;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      z-index: 5;
+    }
+    .slide-signature-tag i { color: var(--primary); }
+
+    /* Mascot Characters Floating with Breathing Animation */
+    .mascot-container {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .mascot-character {
+      font-size: 3.5rem;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+      animation: mascotFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes mascotFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    .speech-bubble {
+      background: var(--dark);
+      color: white;
+      padding: 0.5rem 0.9rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      position: relative;
+      max-width: 190px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      animation: floatSpeech 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatSpeech {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: var(--dark) transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* Slide Typography & Layouts */
+    .slide-header {
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px dashed #E2E8F0;
+    }
+
+    .slide-tag {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.25rem;
+    }
+
+    .slide-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.75rem;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Rule & Trap Boxes */
+    .rule-box {
+      background: linear-gradient(135deg, #EEF2FF, #F0FDFA);
+      border-left: 6px solid var(--primary);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .rule-box-title {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trap-box {
+      background: linear-gradient(135deg, #FEF2F2, #FFFBEB);
+      border-left: 6px solid var(--danger);
+      border-radius: 16px;
+      padding: 0.9rem 1.25rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .trap-box-title {
+      font-weight: 800;
+      color: var(--danger);
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .rule-content {
+      font-size: 1rem;
+      line-height: 1.45;
+      color: #334155;
+    }
+
+    .rule-content ul {
+      margin-left: 1.25rem;
+      margin-top: 0.3rem;
+    }
+
+    /* Teacher Script Banner */
+    .teacher-script {
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      color: #92400E;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .teacher-script i { margin-top: 0.2rem; color: #D97706; }
+
+    /* Interactive Practice Section */
+    .practice-section {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 1.25rem;
+      border: 2px solid #E2E8F0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .question-prompt {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Input & Options Area */
+    .answers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .answer-btn {
+      background: white;
+      border: 2px solid #CBD5E1;
+      border-radius: 14px;
+      padding: 0.8rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .answer-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      background: var(--primary-light);
+    }
+
+    .answer-btn.correct {
+      background: #D1FAE5 !important;
+      border-color: var(--success) !important;
+      color: #065F46 !important;
+    }
+
+    .answer-btn.incorrect {
+      background: #FEE2E2 !important;
+      border-color: var(--danger) !important;
+      color: #991B1B !important;
+    }
+
+    /* Navigation Footer */
+    .controls-footer {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.8rem 1.75rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #6366F1);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      border: 2px solid #E2E8F0;
+    }
+
+    .btn-secondary:hover {
+      background: #F1F5F9;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 10px;
+      background: #E2E8F0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* Slide 11 Arcade Arena */
+    .arcade-arena {
+      background: white;
+      border-radius: 20px;
+      border: 3px solid var(--primary-light);
+      padding: 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .arcade-display {
+      background: var(--dark);
+      color: #38BDF8;
+      font-family: 'Courier New', monospace;
+      padding: 1.5rem;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .arcade-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .arcade-btn {
+      background: #F8FAFC;
+      border: 3px solid #CBD5E1;
+      padding: 1rem;
+      border-radius: 14px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .arcade-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    /* Floating Math Symbols Animation */
+    .bg-symbol {
+      position: absolute;
+      font-size: 2rem;
+      color: rgba(79, 70, 229, 0.06);
+      font-weight: 900;
+      pointer-events: none;
+      animation: floatSymbol 10s infinite linear;
+    }
+
+    @keyframes floatSymbol {
+      0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-100%) rotate(360deg); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 0.5rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+      .hud-stats { font-size: 0.85rem; gap: 0.5rem; }
+      .slide-card { padding: 1.25rem; min-height: 480px; }
+      .slide-title { font-size: 1.4rem; }
+      .answers-grid { grid-template-columns: 1fr; }
+      .mascot-container { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Symbols -->
+  <div class="bg-symbol" style="left: 10%; animation-delay: 0s;">\(\mathbb{Q}\)</div>
+  <div class="bg-symbol" style="left: 30%; animation-delay: 3s;">\(\pi\)</div>
+  <div class="bg-symbol" style="left: 60%; animation-delay: 1s;">\(x^2 - y^2\)</div>
+  <div class="bg-symbol" style="left: 85%; animation-delay: 5s;">\([a, b]\)</div>
+
+  <!-- Header HUD -->
+  <header>
+    <div class="brand-container">
+      <div class="signature-badge">
+        <i class="fa-solid fa-graduation-cap"></i> Eng Sara T Olama
+      </div>
+      <div class="game-title">
+        Unit 1 & 2 Rapid Review
+      </div>
+    </div>
+    <div class="hud-stats">
+      <div class="stat-badge" style="color: var(--accent);">
+        <i class="fa-solid fa-star"></i> <span id="scoreDisplay">0 XP</span>
+      </div>
+      <div class="stat-badge" style="color: var(--primary);">
+        <i class="fa-solid fa-clock"></i> <span id="timerDisplay">10:00</span>
+      </div>
+      <div class="stat-badge" style="color: var(--secondary);">
+        <i class="fa-solid fa-layer-group"></i> <span id="slideTracker">Slide 1/11</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Canvas Layout -->
+  <main>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- ================= SLIDE 1: TITLE SLIDE ================= -->
+    <div class="slide-card active" id="slide-1">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🚀 Slide 1 • Title & Welcome</div>
+        <h2 class="slide-title">Unit 1 & 2 Rapid Review: Rules, Tricks, and Traps!</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-bullseye"></i> Subtitle: 20 Minutes to Exam Confidence</div>
+        <div class="rule-content">
+          Master the exact rules examiners test, evade the sneaky traps, and build unstoppable exam confidence!
+        </div>
+      </div>
+
+      <div class="teacher-script">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <div><strong>Teacher Script:</strong> "Welcome everyone! Today is not about learning new things; it is about perfecting what we know. We will look at the exact rules the examiners love to test, and the traps they set. Keep your eyes on the screen and be ready to answer!"</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button class="btn btn-primary" onclick="nextSlide()" style="font-size: 1.2rem; padding: 1rem 2.5rem;">
+          Start Review Mission <i class="fa-solid fa-rocket"></i>
+        </button>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Let's conquer Units 1 & 2 together!</div>
+        <div class="mascot-character">🦉</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 2: THE REAL NUMBER FAMILY ================= -->
+    <div class="slide-card" id="slide-2">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 2 • Number Systems</div>
+        <h2 class="slide-title">The Real Number Family</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          <ul>
+            <li><strong>Rational (\(\mathbb{Q}\)):</strong> Can be written as a fraction (Integers, terminating decimals, repeating decimals).</li>
+            <li><strong>Irrational (\(\mathbb{Q}'\)):</strong> Cannot be a fraction (Non-perfect square roots, non-perfect cube roots, \(\pi\)).</li>
+            <li><strong>Real (\(\mathbb{R}\))</strong> = Rational \(\cup\) Irrational.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">A square root is only rational if the number inside is a perfect square!</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Classify \(-\sqrt{81}\) as Rational or Irrational.
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-2', 100)">Rational (= -9)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-2', 0)">Irrational</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Check inside the radical first!</div>
+        <div class="mascot-character">🦊</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 3: INTERVALS & THE NUMBER LINE ================= -->
+    <div class="slide-card" id="slide-3">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 3 • Inequalities & Intervals</div>
+        <h2 class="slide-title">Intervals & The Number Line</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          <ul>
+            <li>\([a, b]\) = Closed (Includes both ends)</li>
+            <li>\((a, b)\) = Open (Excludes both ends)</li>
+            <li>\([a, b)\) = Half-open</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">Infinity always gets a round bracket! You can never touch infinity, so it is never closed. Example: \((-\infty, 5]\).</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Write the interval for: "All real numbers greater than or equal to \(-5\)."
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-3', 100)">\([-5, \infty)\)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-3', 0)">\((-5, \infty)\)</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Infinity always wears a round hat!</div>
+        <div class="mascot-character">🐸</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 4: RADICALS & ROOTS ================= -->
+    <div class="slide-card" id="slide-4">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 4 • Radicals</div>
+        <h2 class="slide-title">Radicals & Roots (The Golden Rule)</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          You can only add/subtract roots if they are similar (same index, same radicand).<br>
+          Example: \(\sqrt{2} + 5\sqrt{2} = 6\sqrt{2}\).
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">You CANNOT split a root over addition or subtraction! \(\sqrt{a + b} \neq \sqrt{a} + \sqrt{b}\).</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Simplify \(\sqrt{16 + 9}\)
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-4', 100)">5 (since \(\sqrt{25} = 5\))</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-4', 0)">7 (since \(4 + 3\))</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Add inside first! Don't split roots!</div>
+        <div class="mascot-character">🐼</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 5: EXPONENTS ================= -->
+    <div class="slide-card" id="slide-5">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 5 • Exponent Laws</div>
+        <h2 class="slide-title">Exponents (The Negative Trap)</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          <ul>
+            <li>\(a^m \times a^n = a^{m+n}\) (Add)</li>
+            <li>\(a^m \div a^n = a^{m-n}\) (Subtract)</li>
+            <li>\((a^m)^n = a^{m \times n}\) (Multiply)</li>
+            <li>\(a^{-n} = \frac{1}{a^n}\)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">Watch the brackets with negative numbers! \((-4)^2 = 16\) vs. \(-4^2 = -16\).</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Evaluate \(2^{-3}\)
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-5', 100)">\(\frac{1}{8}\)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-5', 0)">\(-8\)</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Negative exponent flips the base!</div>
+        <div class="mascot-character">🦁</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 6: FACTORING PART 1 ================= -->
+    <div class="slide-card" id="slide-6">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 6 • Factoring</div>
+        <h2 class="slide-title">Factoring Part 1 (GCF & Difference of Squares)</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          <ul>
+            <li><strong>GCF:</strong> Always pull out the greatest common factor first!</li>
+            <li><strong>Difference of Squares:</strong> \(a^2 - b^2 = (a - b)(a + b)\).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">Students forget GCF! Example: \(2x^2 - 32 = 2(x^2 - 16) = 2(x - 4)(x + 4)\).</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Factor \(x^2 - 121\)
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-6', 100)">\((x - 11)(x + 11)\)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-6', 0)">\((x - 11)^2\)</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Always check for GCF first!</div>
+        <div class="mascot-character">🤖</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 7: FACTORING PART 2 ================= -->
+    <div class="slide-card" id="slide-7">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 7 • Factoring</div>
+        <h2 class="slide-title">Factoring Part 2 (Trinomials & Perfect Squares)</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          \(x^2 + bx + c = (x + m)(x + n)\) where \(m \times n = c\) and \(m + n = b\).<br>
+          Perfect Square: \(a^2 + 2ab + b^2 = (a + b)^2\).
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> The Exam Trick</div>
+        <div class="rule-content">If the middle term is twice the product of square roots of outer terms, it's a perfect square!</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Factor \(x^2 + 9x + 20\)
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-7', 100)">\((x + 4)(x + 5)\)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-7', 0)">\((x + 2)(x + 10)\)</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Find factors adding to 9, multiplying to 20!</div>
+        <div class="mascot-character">🧠</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 8: FACTORING PART 3 ================= -->
+    <div class="slide-card" id="slide-8">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🟢 Slide 8 • Factoring</div>
+        <h2 class="slide-title">Factoring Part 3 (Sum & Difference of Cubes)</h2>
+      </div>
+
+      <div class="rule-box">
+        <div class="rule-box-title"><i class="fa-solid fa-book"></i> The Rule</div>
+        <div class="rule-content">
+          \(a^3 + b^3 = (a + b)(a^2 - ab + b^2)\)<br>
+          \(a^3 - b^3 = (a - b)(a^2 + ab + b^2)\)
+        </div>
+      </div>
+
+      <div class="trap-box">
+        <div class="trap-box-title"><i class="fa-solid fa-triangle-exclamation"></i> S.O.A.P. Trick</div>
+        <div class="rule-content"><strong>S</strong>ame sign, <strong>O</strong>pposite sign, <strong>A</strong>lways <strong>P</strong>ositive!</div>
+      </div>
+
+      <div class="practice-section">
+        <div class="question-prompt">
+          🏋️ Quick Practice: Factor \(x^3 - 125\)
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" onclick="checkAnswer(this, true, 'slide-8', 100)">\((x - 5)(x^2 + 5x + 25)\)</button>
+          <button class="answer-btn" onclick="checkAnswer(this, false, 'slide-8', 0)">\((x - 5)(x^2 - 5x + 25)\)</button>
+        </div>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Remember S.O.A.P. for cubes!</div>
+        <div class="mascot-character">💡</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 9: 3-MINUTE RAPID FIRE ================= -->
+    <div class="slide-card" id="slide-9">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">⚡ Slide 9 • Speed Challenge</div>
+        <h2 class="slide-title">The 3-Minute Rapid Fire Challenge</h2>
+      </div>
+
+      <div class="rule-box" style="background: #FEF3C7; border-color: var(--accent);">
+        <div class="rule-box-title" style="color: #B45309;"><i class="fa-solid fa-bolt"></i> Rapid Fire Mode</div>
+        <div class="rule-content">
+          1. Is \(\sqrt{30}\) rational or irrational? &rarr; <strong>Irrational</strong><br>
+          2. Write \(x \le 7\) as an interval &rarr; <strong>\((-\infty, 7]\)</strong><br>
+          3. Factor \(3x^2 - 12\) &rarr; <strong>\(3(x - 2)(x + 2)\)</strong><br>
+          4. Simplify \(\sqrt{9 \times 27}\) &rarr; <strong>\(\sqrt{81} = 9\)</strong><br>
+          5. Factor \(x^3 + 8\) &rarr; <strong>\((x + 2)(x^2 - 2x + 4)\)</strong>
+        </div>
+      </div>
+
+      <div class="teacher-script">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <div><strong>Teacher Script:</strong> "Clear your desks. Answer these in your head. Let's see how fast your exam reflexes are!"</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 1rem;">
+        <button class="btn btn-primary" onclick="nextSlide()">
+          Proceed to Exam Tips <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">Lightning speed math!</div>
+        <div class="mascot-character">⚡</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 10: FINAL EXAM TIPS ================= -->
+    <div class="slide-card" id="slide-10">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header">
+        <div class="slide-tag">🏆 Slide 10 • Final Prep</div>
+        <h2 class="slide-title">Final Exam Tips from Eng Sara</h2>
+      </div>
+
+      <div class="rule-box" style="background: linear-gradient(135deg, #FEF3C7, #ECFDF5);">
+        <div class="rule-box-title" style="color: #B45309;"><i class="fa-solid fa-award"></i> Exam Strategy Guide</div>
+        <div class="rule-content" style="font-size: 1.05rem; line-height: 1.7;">
+          1. 📌 <strong>When in doubt:</strong> Plug in numbers for intervals or inequalities.<br>
+          2. 🔍 <strong>Always check:</strong> Can you factor out a GCF first?<br>
+          3. ✍️ <strong>Re-read the question:</strong> Did it ask for interval notation or set-builder notation?
+        </div>
+      </div>
+
+      <div class="teacher-script">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <div><strong>Closing Script:</strong> "You are ready. Take a deep breath, read carefully, and show the examiner what you know. Good luck!"</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 1rem;">
+        <button class="btn btn-primary" onclick="nextSlide()" style="font-size: 1.15rem; padding: 0.9rem 2.2rem;">
+          Enter Slide 11 Arcade Arena <i class="fa-solid fa-gamepad"></i>
+        </button>
+      </div>
+
+      <div class="mascot-container">
+        <div class="speech-bubble">You're going to ace this!</div>
+        <div class="mascot-character">🏆</div>
+      </div>
+    </div>
+
+    <!-- ================= SLIDE 11: LET'S PLAY SOME GAMES!! ================= -->
+    <div class="slide-card" id="slide-11">
+      <div class="slide-signature-tag"><i class="fa-solid fa-pen-nib"></i> Eng Sara T Olama</div>
+      <div class="slide-header" style="text-align: center; border-bottom: none;">
+        <div class="slide-tag">🎮 Slide 11 • Arcade Arena</div>
+        <h2 class="slide-title" style="justify-content: center; font-size: 2.2rem; color: var(--primary);">
+          🎮 Let's play some games!! ⚡
+        </h2>
+      </div>
+
+      <div class="arcade-arena">
+        <div style="font-weight: 800; color: #64748B;">RAPID MATH CHALLENGE - TEST YOUR REFLEXES!</div>
+        
+        <div class="arcade-display" id="arcadeQuestion">
+          x² - 121 = ?
+        </div>
+
+        <div class="arcade-options" id="arcadeOptions">
+          <!-- Dynamically Generated -->
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
+          <div class="stat-badge" style="color: var(--success);">
+            Score: <span id="arcadeScore">0</span>
+          </div>
+          <div class="stat-badge" style="color: var(--danger);">
+            Streak: <span id="arcadeStreak">0 🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mas
